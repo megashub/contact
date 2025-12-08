@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Contact shub</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 1rem;
+    }
+
+    form {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      max-width: 400px;
+      width: 100%;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 1rem;
+    }
+
+    input, textarea, button {
+      width: 100%;
+      padding: 0.5rem;
+      margin-top: 0.25rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box;
+      font-size: 1rem;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    button {
+      margin-top: 1rem;
+      background: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    button:hover {
+      background: #0056b3;
+    }
+
+    .thankyou {
+      text-align: center;
+      font-size: 1.2rem;
+      color: green;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+<form id="contact-form" action="https://api.web3forms.com/submit" method="POST">
+  <input type="hidden" name="access_key" value="fa40db35-6a06-4095-aaf2-532833bb6eef">
+
+  <!-- Optional: redirect to thank-you page -->
+  <!-- <input type="hidden" name="redirect" value="https://yourusername.github.io/thank-you.html"> -->
+
+  <h2>Contact shub</h2>
+
+  <label>
+    Name
+    <input type="text" name="name" required placeholder="Your Name">
+  </label>
+
+  <label>
+    Email
+    <input type="email" name="email" required placeholder="you@example.com">
+  </label>
+
+  <label>
+    Message
+    <textarea name="message" required placeholder="Your message..."></textarea>
+  </label>
+
+  <!-- Honeypot for spam protection -->
+  <input type="checkbox" name="botcheck" style="display:none;">
+
+  <button type="submit">Send</button>
+</form>
+
+<div class="thankyou" id="thankyou-msg">Thank you! Your message has been sent.</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const form = document.getElementById("contact-form");
+  const thankyou = document.getElementById("thankyou-msg");
+
+  form.addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const data = new FormData(form);
+
+    fetch(form.action, {
+      method: form.method,
+      body: data
+    })
+    .then(response => response.json())
+    .then(result => {
+      if(result.success) {
+        form.style.display = 'none';
+        thankyou.style.display = 'block';
+      } else {
+        alert("Error sending message. Please try again.");
+      }
+    })
+    .catch(error => {
+      console.error(error);
+      alert("Error sending message. Please try again.");
+    });
+  });
+});
+</script>
+
+</body>
+</html>
